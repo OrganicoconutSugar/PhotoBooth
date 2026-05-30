@@ -25,3 +25,19 @@ function globalToggleTheme() {
     const savedTheme = localStorage.getItem('studio-theme') || 'dark';
     applyGlobalTheme(savedTheme);
 })();
+
+// --- Background hero toggle ---
+// Ensure hero background is applied globally (no toggle UI)
+function setBodyBg(enabled) {
+    const bgUrl = "/static/assets/Photobooth_Background.jpeg";
+    if (enabled) {
+        document.body.classList.add('hero-bg');
+        document.body.style.backgroundImage = `url('${bgUrl}')`;
+    } else {
+        document.body.classList.remove('hero-bg');
+        document.body.style.backgroundImage = '';
+    }
+}
+
+// apply background by default for all pages
+window.addEventListener('DOMContentLoaded', function() { setBodyBg(true); });

@@ -7,6 +7,21 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* When a photographic hero background is present we expose a few CSS vars
+   and ensure the image covers the viewport while keeping text readable. */
+body.hero-bg {
+    /* Image is injected inline in the template via Jinja (url_for). */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    /* Colors tuned to the provided image (warm red heart + soft beige wall) */
+    --photo-accent: #d43f3a; /* warm heart red */
+    --photo-muted: #f3d7cf;  /* warm beige highlight */
+    --photo-dark: #1f1f23;   /* deep shadow */
+}
+
 /* FORCE HIDE ELEMEN LATAR BELAKANG DI SEMUA HALAMAN */
 .absolute.w-64.h-64.bg-white,
 .absolute.top-14,
@@ -37,6 +52,106 @@ body.light-theme {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.4s ease;
+}
+
+/* Lightweight card component guided by the background photo's palette.
+   Use the --photo-* variables provided by body.hero-bg when available.
+   These styles ensure cards remain readable and do not clash with the image. */
+.card {
+    background: rgba(9,9,11,0.72); /* darker translucent for legibility */
+    border-radius: 12px;
+    padding: 1rem;
+    border-left: 4px solid var(--photo-accent, #d43f3a);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.55);
+}
+
+.card .muted {
+    color: var(--photo-muted, #f3d7cf);
+}
+
+.accent {
+    background-color: var(--photo-accent, #d43f3a);
+    color: #fff;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+body.light-theme .card {
+    background: rgba(255,255,255,0.9);
+    color: #09090b;
+    box-shadow: 0 6px 18px rgba(9,9,11,0.08);
+    border-left-color: var(--photo-accent, #d43f3a);
+}
+
+/* When hero background is present, strengthen text contrast globally */
+body.hero-bg {
+    color: #f7f3f0; /* light text over darker card/image */
+}
+
+body.hero-bg h1, body.hero-bg h2, body.hero-bg h3, body.hero-bg h4, body.hero-bg h5 {
+    text-shadow: 0 2px 10px rgba(0,0,0,0.65);
+}
+
+body.hero-bg .global-glass {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,0,0,0.18);
+}
+
+/* Accent elements (badges, buttons) override to match photo accent color with readable text */
+.accent, .btn-accent {
+    background-color: var(--photo-accent, #d43f3a) !important;
+    color: #fff !important;
+}
+
+/* Ensure links and important text are visible */
+body.hero-bg a, body.hero-bg .text-adaptive-muted {
+    color: #f1e7e4;
+}
+
+/* Make utility backgrounds (Tailwind-style classes used in templates) compatible with hero-bg */
+body.hero-bg .bg-white,
+body.hero-bg .bg-zinc-50,
+body.hero-bg .panel-card,
+body.hero-bg .form-card,
+body.hero-bg .gallery-card,
+body.hero-bg .chamber-viewport,
+body.hero-bg .bg-zinc-100,
+body.hero-bg .bg-zinc-200,
+body.hero-bg .bg-zinc-900\/80,
+body.hero-bg .bg-zinc-950\/80 {
+    background: rgba(9,9,11,0.72) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    color: #f4efe9 !important;
+}
+
+/* Override utility text color classes that would be dark on top of the photo */
+body.hero-bg .text-zinc-900,
+body.hero-bg .text-zinc-800,
+body.hero-bg .text-zinc-700,
+body.hero-bg .text-zinc-600,
+body.hero-bg .text-zinc-500 {
+    color: #efe6e1 !important;
+}
+
+/* Ensure small muted labels remain legible but lighter */
+body.hero-bg .text-zinc-400,
+body.hero-bg .text-zinc-300,
+body.hero-bg .text-zinc-200 {
+    color: rgba(241,231,228,0.85) !important;
+}
+
+/* For gallery image panels we keep image containers visible but ensure card footer is readable */
+body.hero-bg .gallery-card > .mt-4,
+body.hero-bg .gallery-card .frame-number {
+    color: #efe6e1 !important;
 }
 
 body.light-theme .global-glass {

@@ -14,7 +14,9 @@
 
 </head>
 
-<body class="min-h-screen flex flex-col overflow-x-hidden">
+{# Add `hero-bg` class to enable photographic background. If you prefer to disable later,
+   remove `hero-bg` from the body class or delete the `style` attribute below. #}
+<body class="min-h-screen flex flex-col overflow-x-hidden hero-bg" style="background-image: url('{{ url_for('static', filename='assets/Photobooth_Background.jpeg') }}');">
 
     <nav
         class="global-glass fixed top-4 left-1/2 -translate-x-1/2 w-[92%] md:w-[60%] z-50 px-6 md:px-8 py-3 flex justify-between items-center border border-black/10 dark:border-white/10 shadow-2xl rounded-full backdrop-blur-md transition-all duration-300 text-slate-900 dark:text-white">
@@ -37,6 +39,7 @@
                 title="Buka Profil Saya">
                 <span class="text-xs group-hover:scale-110 transition-transform">👤</span>
             </a>
+            <!-- background applied globally via base template -->
         </div>
 
     </nav>

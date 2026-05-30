@@ -3,13 +3,12 @@
 
 <div class="pt-32 pb-16 min-h-screen bg-zinc-50 text-zinc-900 relative z-10 select-none transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4">
-        
         <!-- Header -->
         <div class="flex justify-between items-end mb-10 border-b border-zinc-200 pb-6 dash-header">
             <div>
                 <h1 class="text-3xl md:text-5xl font-black tracking-widest text-zinc-900 uppercase font-sans">System Admin</h1>
                 <p class="text-zinc-500 text-xs tracking-widest uppercase mt-2 font-semibold">
-                    ■ Pusat Kendali Pengguna & Arsip Server
+                    &#9632; Pusat Kendali Pengguna &amp; Arsip Server
                 </p>
             </div>
             <div class="flex items-center gap-3">
@@ -65,7 +64,7 @@
                     </thead>
                     <tbody>
                         {% for u in users %}
-                        <tr id="user-row-{{ u.id }}" class="border-b border-zinc-50 hover:bg-zinc-50/50 transition-colors text-sm">
+                        <tr data-user-id="{{ u.id }}" class="border-b border-zinc-50 hover:bg-zinc-50/50 transition-colors text-sm">
                             <td class="p-4 flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 flex items-center justify-center flex-shrink-0">
                                     {% if u.profile_pic %}
@@ -116,7 +115,6 @@
 <!-- Sliding Profile Details Drawer -->
 <div id="drawer-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[90] opacity-0 pointer-events-none transition-opacity duration-300"></div>
 <div id="user-drawer" class="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl z-[100] transform translate-x-full transition-transform duration-300 ease-out border-l border-zinc-200/80 flex flex-col justify-between select-none">
-    
     <!-- Drawer Header -->
     <div class="p-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
         <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase flex items-center gap-1.5">
@@ -129,17 +127,14 @@
 
     <!-- Drawer Content (Scrollable) -->
     <div class="flex-grow overflow-y-auto p-6 space-y-8">
-        
         <!-- Member Profile Card -->
         <div class="border border-zinc-200/80 p-6 rounded-3xl bg-zinc-50/50 shadow-sm relative overflow-hidden flex flex-col items-center text-center">
             <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md ring-1 ring-zinc-200 bg-zinc-100 mb-4 flex items-center justify-center">
-                <img id="drawer-avatar" class="w-full h-full object-cover hidden" alt="Avatar">
+                <img id="drawer-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-full h-full object-cover hidden" alt="Avatar">
                 <span id="drawer-avatar-placeholder" class="text-4xl text-zinc-400">👤</span>
             </div>
-            
             <h4 id="drawer-username" class="text-xl font-black text-zinc-900 uppercase font-sans">-</h4>
             <span id="drawer-role-badge" class="mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider">-</span>
-            
             <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 border-t border-zinc-200/60 pt-6 text-left text-xs">
                 <div class="space-y-1">
                     <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Email Address</span>
@@ -201,7 +196,7 @@
         document.getElementById('drawer-bio').innerText = '-';
         document.getElementById('drawer-avatar').classList.add('hidden');
         document.getElementById('drawer-avatar-placeholder').classList.remove('hidden');
-        
+
         const galleryGrid = document.getElementById('drawer-gallery');
         const galleryEmpty = document.getElementById('drawer-gallery-empty');
         galleryGrid.innerHTML = '';
@@ -282,12 +277,13 @@
             .then(data => {
                 if (data.success) {
                     // Remove Row in Table with GSAP
-                    gsap.to(`#user-row-${userId}`, {
+                    const rowEl = document.querySelector(`[data-user-id="${userId}"]`);
+                    gsap.to(rowEl, {
                         opacity: 0,
                         x: -50,
                         duration: 0.5,
                         onComplete: () => {
-                            document.getElementById(`user-row-${userId}`).remove();
+                            rowEl.remove();
                             // Update total users counter badge dynamically
                             const totalCounter = document.querySelector('.admin-stats h3');
                             if (totalCounter) {

@@ -234,3 +234,49 @@ Foto-foto yang sudah dihapus oleh pengguna (user) dari galeri mereka masih terli
 **File yang Diubah:**
 - `core/routes/admin.py` — Logic filtering file existence + auto orphan cleanup + endpoint `/admin/cleanup-orphans`
 - `templates/admin.html` — Tombol Cleanup DB + JS handler `runCleanup()` + auto-cleanup log di console
+
+---
+
+### [2026-05-30 19:12] — Add Photographic Background + Adaptive Card Palette
+
+**Status:** ✅ Implemented (can be reverted)
+
+**Yang Dikerjakan:**
+- Menambahkan kelas `hero-bg` pada `templates/base.html` yang ketika di-set akan memasang gambar `static/assets/Photobooth_Background.jpeg` sebagai background halaman.
+- Menambahkan CSS di `static/css/style.css` yang memperkenalkan CSS variables (`--photo-accent`, `--photo-muted`, `--photo-dark`) dan style `.card`, `.accent` untuk menyesuaikan warna kartu agar selaras dengan palet warna foto (warm red + warm beige + shadow).
+
+**Catatan:**
+- Jika ingin menghapus background, cukup hapus `hero-bg` dari elemen `<body>` di `templates/base.html` (atau set `use_hero_bg=False` di konteks render). Pastikan file `Photobooth_Background.jpeg` ditempatkan di `static/assets/` sebelum memuat halaman.
+
+---
+
+### [2026-05-30 19:40] — Apply Background Globally, Remove Toggle UI, Improve Contrast
+
+**Status:** ✅ Implemented
+
+**Yang Dikerjakan:**
+- Menerapkan gambar background yang diberikan ke semua halaman dengan memastikan `hero-bg` di-set pada `body` oleh `base.html` dan dengan JS yang memastikan `background-image` di-set untuk semua halaman.
+- Menghapus UI toggle background dari navbar (perintah user: tidak diperlukan).
+- Memperbaiki CSS (`static/css/style.css`) agar kartu (`.card`) dan teks memiliki kontras yang lebih baik di atas foto:
+  - `.card` sekarang menggunakan background gelap semi-transparan untuk keterbacaan.
+  - Menambahkan `text-shadow` pada heading dan forcing light text color saat `body.hero-bg` aktif.
+  - Menambahkan `--photo-accent` usage untuk badge/aksen sehingga elemen aksen tetap konsisten.
+
+**Catatan:**
+- Jika ada halaman yang masih terlihat "nabrak" (teks sulit dibaca), beri tahu halaman mana (mis. `gallery.html`, `profile.html`) dan saya akan men-tune warna secara spesifik per komponen.
+
+---
+
+### [2026-05-30 19:58] — Force Background Across Photobooth & Gallery Pages + CSS Overrides
+
+**Status:** ✅ Implemented
+
+**Yang Dikerjakan:**
+- Menambahkan CSS override ketika `body.hero-bg` aktif untuk men-tweak utility classes (`.bg-white`, `.bg-zinc-50`, panel-card, form-card, gallery-card, dll) sehingga elemen-elemen tersebut menjadi semi-transparant gelap dan teks dipaksa terang agar tetap terbaca di atas foto.
+- Memastikan footer gallery, badges, dan teks kecil tetap memiliki kontras yang cukup.
+
+**Catatan:**
+- Jika ada komponen spesifik yang masih bermasalah, sebutkan nama file/template atau kirim screenshot agar saya bisa men-tune kasus tersebut secara presisi.
+
+
+
