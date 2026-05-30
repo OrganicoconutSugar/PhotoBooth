@@ -1,0 +1,93 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #09090b;
+    /* zinc-950 */
+    color: #f4f4f5;
+    /* zinc-100 */
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* FORCE HIDE ELEMEN LATAR BELAKANG DI SEMUA HALAMAN */
+.absolute.w-64.h-64.bg-white,
+.absolute.top-14,
+[class*="bg-white/"],
+img[src*="sparkle"],
+div[class*="rounded-full"],
+.bg-zinc-800\/20,
+main>div.absolute,
+body>div.absolute,
+.floating-bg-element {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* LOGIKA LIGHT MODE GLOBAL */
+body.light-theme {
+    background-color: #f4f4f5;
+    /* zinc-100 */
+    color: #09090b;
+    /* zinc-950 */
+}
+
+/* EFEK KACA ADAPTIF (GLASSMORPHISM) */
+.global-glass {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s ease;
+}
+
+body.light-theme .global-glass {
+    background: rgba(9, 9, 11, 0.04);
+    border: 1px solid rgba(9, 9, 11, 0.08);
+}
+
+/* TEXT ADAPTIF */
+.text-adaptive-muted {
+    color: #71717a;
+}
+
+body.light-theme .text-adaptive-muted {
+    color: #52525b;
+}
+
+/* BUTTON NAVIGASI ADAPTIF */
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+body.light-theme .nav-link:hover {
+    color: #71717a;
+}
+
+/* Animasi Marquee Kereta Berjalan Otomatis */
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee-infinite {
+    display: flex;
+    width: max-content;
+    animation: marquee 25s linear infinite;
+}
+
+.animate-marquee-infinite:hover {
+    animation-play-state: paused;
+}
+
+/* Kustomisasi Navbar Dramatis 60% */
+.dramatic-nav {
+    width: 60% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 9999px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}

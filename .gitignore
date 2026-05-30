@@ -1,0 +1,141 @@
+# ==========================================
+# 1. DEPENDENCIES & PACKAGE MANAGERS (Penyebab Utama Token Habis)
+# ==========================================
+node_modules/
+jspm_packages/
+web_modules/
+.npm/
+.yarn/
+pnpm-lock.yaml
+bun.lockb
+
+# Python dependencies
+venv/
+.venv/
+env/
+.env/
+ENV/
+bin/
+lib/
+include/
+pip-selfcheck.json
+
+# PHP dependencies
+vendor/
+
+# Ruby dependencies
+.bundle/
+vendor/bundle/
+
+# Java / Android / Kotlin
+.gradle/
+build/
+target/
+*.class
+
+# Rust / Go
+target/
+bin/
+
+# ==========================================
+# 2. FILE CACHE, LOGS, & TEMPORARY (Sering Berubah & Memicu Agen AI)
+# ==========================================
+*.log
+*.log.*
+logs/
+*.gz
+*.tmp
+*.bak
+*.swp
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# JavaScript/TypeScript cache
+.eslintcache
+.stylelintcache
+.prettiercache
+.parcel-cache
+.turbo/
+.next/
+.nuxt/
+.output/
+
+# ==========================================
+# 3. CONCEALMENT & ENVIRONMENT SECRETS (Keamanan + Hemat Token)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.pub
+*.cert
+credentials.json
+
+# ==========================================
+# 4. SYSTEM JUNK & OS FILES (File Sampah Bawaan Laptop)
+# ==========================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+
+# ==========================================
+# 5. IDE & EDITOR CACHE (Kecuali Antigravity Core Settings)
+# ==========================================
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# 6. ASSETS & MEDIA LARGE FILES (Disesuaikan untuk AI Photobooth)
+# ==========================================
+*.mp4
+*.mp3
+*.wav
+*.avi
+*.mov
+*.pdf
+*.zip
+*.tar
+*.rar
+*.7z
+
+# --- ATURAN KHUSUS PHOTOBOOTH ---
+# Abaikan semua file foto hasil testing dan avatar user di folder uploads
+static/uploads/*
+
+# Jangan abaikan file .gitkeep agar folder uploads kosongnya tetap terbuat di laptop teman
+!static/uploads/.gitkeep
+
+# Jangan abaikan jika ada gambar aset UI/desain web di folder static utama (misal static/images)
+!static/**/*.png
+!static/**/*.jpg
+!static/**/*.jpeg
+!static/**/*.svg

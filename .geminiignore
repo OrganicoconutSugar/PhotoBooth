@@ -1,0 +1,35 @@
+# Pasang baris ini agar semua yang ada di .gitignore otomatis diabaikan juga oleh Gemini
+# (Sangat disarankan agar Anda tidak perlu menulis ulang)
+*.gitignore
+
+# 1. FILE DATA RAKSASA (Penyedot token nomor satu!)
+*.csv
+*.json
+*.xml
+*.sql
+*.sqlite
+*.db
+/data/
+/datasets/
+
+# 2. DOKUMENTASI & MEDIA (Gemini tidak perlu membaca ini saat coding)
+*.md
+*.pdf
+*.docx
+/docs/
+/documentation/
+/images/
+/assets/
+
+# 3. KODE PIHAK KETIGA / LIBRARIES
+/node_modules/
+/vendor/
+/venv/
+/.venv/
+
+# 4. FILE HASIL BUILD / MINIFIED KODE (Kode satu baris yang sangat panjang)
+*.min.js
+*.min.css
+/dist/
+/build/
+/out/

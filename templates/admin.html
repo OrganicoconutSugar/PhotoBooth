@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="pt-32 pb-16 min-h-screen bg-zinc-50 text-zinc-900 relative z-10 select-none transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-4">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-end mb-10 border-b border-zinc-200 pb-6 dash-header">
+            <div>
+                <h1 class="text-3xl md:text-5xl font-black tracking-widest text-zinc-900 uppercase font-sans">System Admin</h1>
+                <p class="text-zinc-500 text-xs tracking-widest uppercase mt-2 font-semibold">
+                    ■ Pusat Kendali Pengguna & Arsip Server
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="runCleanup()" title="Bersihkan record foto yang sudah dihapus dari database"
+                    class="inline-block bg-amber-50 hover:bg-amber-500 hover:text-white text-amber-700 border border-amber-200 font-black text-[10px] tracking-widest uppercase px-5 py-3 transition-all duration-300 rounded-xl cursor-pointer">
+                    🧹 Cleanup DB
+                </button>
+                <a href="{{ url_for('user.dashboard') }}"
+                    class="inline-block bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-black text-[10px] tracking-widest uppercase px-5 py-3 border border-zinc-200 transition-all duration-300 rounded-xl cursor-pointer">
+                    ← Kembali
+                </a>
+            </div>
+        </div>
+
+        <!-- Premium Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 admin-stats">
+            <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-emerald-500 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Users Registered</p>
+                    <h3 class="text-3xl font-black text-zinc-900">{{ users|length }}</h3>
+                </div>
+                <div class="text-3xl bg-emerald-50 text-emerald-600 w-12 h-12 flex items-center justify-center rounded-2xl">👥</div>
+            </div>
+            <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-blue-500 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Photos Saved</p>
+                    <h3 class="text-3xl font-black text-zinc-900">{{ total_photos | default('0') }}</h3>
+                </div>
+                <div class="text-3xl bg-blue-50 text-blue-600 w-12 h-12 flex items-center justify-center rounded-2xl">📸</div>
+            </div>
+            <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-purple-500 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Server System Status</p>
+                    <h3 class="text-sm font-black text-emerald-600 tracking-wider flex items-center gap-1.5 mt-1">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> ONLINE
+                    </h3>
+                </div>
+                <div class="text-3xl bg-purple-50 text-purple-600 w-12 h-12 flex items-center justify-center rounded-2xl">⚙️</div>
+            </div>
+        </div>
+
+        <!-- Modern User Table -->
+        <div class="bg-white border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm admin-table">
+            <div class="overflow-x-auto p-4">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-zinc-100 text-[10px] tracking-widest uppercase text-zinc-400">
+                            <th class="p-4 font-bold">User Profile</th>
+                            <th class="p-4 font-bold">Email Address</th>
+                            <th class="p-4 font-bold">Account Role</th>
+                            <th class="p-4 font-bold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr id="user-row-{{ u.id }}" class="border-b border-zinc-50 hover:bg-zinc-50/50 transition-colors text-sm">
+                            <td class="p-4 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 flex items-center justify-center flex-shrink-0">
+                                    {% if u.profile_pic %}
+                                        <img src="{{ url_for('static', filename='uploads/' + u.profile_pic) }}" class="w-full h-full object-cover" alt="Avatar">
+                                    {% else %}
+                                        <span class="text-md text-zinc-400">👤</span>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-zinc-800">{{ u.username }}</h4>
+                                    <p class="text-[10px] font-mono text-zinc-400">ID: {{ u.id }}</p>
+                                </div>
+                            </td>
+                            <td class="p-4 text-zinc-600 font-medium">{{ u.email }}</td>
+                            <td class="p-4">
+                                {% if u.role == 'admin' %}
+                                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-md text-[9px] font-black uppercase tracking-wider">
+                                        Admin
+                                    </span>
+                                {% else %}
+                                    <span class="px-2.5 py-1 bg-zinc-100 text-zinc-700 border border-zinc-200 rounded-md text-[9px] font-black uppercase tracking-wider">
+                                        Consumer
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4 text-right space-x-1">
+                                <button type="button" onclick="openUserDrawer('{{ u.id }}')"
+                                    class="inline-flex items-center gap-1 bg-zinc-900 text-white hover:bg-zinc-800 text-[10px] font-black uppercase tracking-wider px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm cursor-pointer">
+                                    👁️ Detail
+                                </button>
+                                {% if u.id != current_user.id %}
+                                <button type="button" onclick="deleteUser('{{ u.id }}', '{{ u.username }}')"
+                                    class="inline-flex items-center gap-1 bg-red-50 text-red-600 border border-red-100 hover:bg-red-600 hover:text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm cursor-pointer">
+                                    🗑️ Hapus
+                                </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Sliding Profile Details Drawer -->
+<div id="drawer-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[90] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+<div id="user-drawer" class="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl z-[100] transform translate-x-full transition-transform duration-300 ease-out border-l border-zinc-200/80 flex flex-col justify-between select-none">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
+        <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase flex items-center gap-1.5">
+            <span class="inline-block w-1.5 h-1.5 bg-zinc-500 rounded-full"></span> Studio Member Card Detail
+        </h3>
+        <button type="button" onclick="closeUserDrawer()" class="text-zinc-400 hover:text-zinc-600 text-md font-bold cursor-pointer">
+            ✕ Close
+        </button>
+    </div>
+
+    <!-- Drawer Content (Scrollable) -->
+    <div class="flex-grow overflow-y-auto p-6 space-y-8">
+        
+        <!-- Member Profile Card -->
+        <div class="border border-zinc-200/80 p-6 rounded-3xl bg-zinc-50/50 shadow-sm relative overflow-hidden flex flex-col items-center text-center">
+            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md ring-1 ring-zinc-200 bg-zinc-100 mb-4 flex items-center justify-center">
+                <img id="drawer-avatar" class="w-full h-full object-cover hidden" alt="Avatar">
+                <span id="drawer-avatar-placeholder" class="text-4xl text-zinc-400">👤</span>
+            </div>
+            
+            <h4 id="drawer-username" class="text-xl font-black text-zinc-900 uppercase font-sans">-</h4>
+            <span id="drawer-role-badge" class="mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider">-</span>
+            
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 border-t border-zinc-200/60 pt-6 text-left text-xs">
+                <div class="space-y-1">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Email Address</span>
+                    <span id="drawer-email" class="text-zinc-700 font-semibold block truncate">-</span>
+                </div>
+                <div class="space-y-1">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Phone Number</span>
+                    <span id="drawer-phone" class="text-zinc-700 font-semibold block truncate">-</span>
+                </div>
+            </div>
+
+            <div class="w-full mt-4 text-left text-xs border-t border-zinc-200/60 pt-4 space-y-1">
+                <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Biography Description</span>
+                <p id="drawer-bio" class="text-zinc-600 font-medium leading-relaxed">-</p>
+            </div>
+        </div>
+
+        <!-- User Photobooth Gallery -->
+        <div class="space-y-4">
+            <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase flex items-center gap-1.5">
+                <span class="inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span> User Gallery Capture History
+            </h3>
+            <div id="drawer-gallery" class="grid grid-cols-3 gap-3">
+                <!-- Loaded Dynamically -->
+            </div>
+            <div id="drawer-gallery-empty" class="hidden border border-dashed border-zinc-200/80 p-8 rounded-2xl text-center text-xs text-zinc-400">
+                Belum ada arsip foto senyuman yang terdeteksi. 📸
+            </div>
+        </div>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="p-5 border-t border-zinc-100 bg-zinc-50 text-[10px] font-bold text-zinc-400 uppercase tracking-widest text-center">
+        © AESTHETIC STUDIO CONTROL ROOM
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        gsap.from('.dash-header', { opacity: 0, y: -20, duration: 1, ease: "power4.out" });
+        gsap.from('.admin-stats > div', { opacity: 0, y: 20, duration: 0.8, stagger: 0.1 });
+        gsap.from('.admin-table', { opacity: 0, y: 30, duration: 1, delay: 0.3 });
+    });
+
+    const drawer = document.getElementById('user-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+
+    function openUserDrawer(userId) {
+        overlay.classList.remove('pointer-events-none');
+        overlay.style.opacity = '1';
+        drawer.style.transform = 'translateX(0)';
+
+        // Reset Drawer Fields to loading states
+        document.getElementById('drawer-username').innerText = 'Loading...';
+        document.getElementById('drawer-role-badge').innerText = '-';
+        document.getElementById('drawer-role-badge').className = 'mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-zinc-100 text-zinc-400';
+        document.getElementById('drawer-email').innerText = '-';
+        document.getElementById('drawer-phone').innerText = '-';
+        document.getElementById('drawer-bio').innerText = '-';
+        document.getElementById('drawer-avatar').classList.add('hidden');
+        document.getElementById('drawer-avatar-placeholder').classList.remove('hidden');
+        
+        const galleryGrid = document.getElementById('drawer-gallery');
+        const galleryEmpty = document.getElementById('drawer-gallery-empty');
+        galleryGrid.innerHTML = '';
+        galleryEmpty.classList.add('hidden');
+
+        // Fetch User Info & Gallery dynamically via AJAX
+        fetch(`/admin/user/${userId}/details`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const u = data.user;
+                    document.getElementById('drawer-username').innerText = u.username;
+                    document.getElementById('drawer-email').innerText = u.email;
+                    document.getElementById('drawer-phone').innerText = u.phone;
+                    document.getElementById('drawer-bio').innerText = u.bio;
+
+                    const roleBadge = document.getElementById('drawer-role-badge');
+                    roleBadge.innerText = u.role;
+                    if (u.role === 'admin') {
+                        roleBadge.className = 'mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-100';
+                    } else {
+                        roleBadge.className = 'mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-zinc-100 text-zinc-700 border border-zinc-200';
+                    }
+
+                    if (u.profile_pic) {
+                        const avatarImg = document.getElementById('drawer-avatar');
+                        avatarImg.src = `/static/uploads/${u.profile_pic}`;
+                        avatarImg.classList.remove('hidden');
+                        document.getElementById('drawer-avatar-placeholder').classList.add('hidden');
+                    }
+
+                    if (data.photos && data.photos.length > 0) {
+                        data.photos.forEach(p => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'aspect-[3/4] bg-zinc-100 rounded-xl overflow-hidden relative border border-zinc-200 shadow-sm group/photo';
+                            wrapper.innerHTML = `
+                                <img src="/static/uploads/${p.file_path}" class="w-full h-full object-cover transition-transform duration-500 group-hover/photo:scale-110" alt="Capture">
+                                <div class="absolute bottom-2 right-2 bg-black/85 backdrop-blur-md px-1.5 py-0.5 rounded text-[8px] font-black text-white uppercase">
+                                    😊 ${p.smile_score}%
+                                </div>
+                            `;
+                            galleryGrid.appendChild(wrapper);
+                        });
+                    } else {
+                        galleryEmpty.classList.remove('hidden');
+                    }
+
+                    // Log jika ada orphan record yang dibersihkan otomatis
+                    if (data.cleaned_orphans > 0) {
+                        console.info(`[Admin Cleanup] ${data.cleaned_orphans} record foto sampah otomatis dibersihkan untuk user ${data.user.username}.`);
+                    }
+                } else {
+                    alert('Gagal mengambil data user: ' + data.message);
+                    closeUserDrawer();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan.');
+                closeUserDrawer();
+            });
+    }
+
+    function closeUserDrawer() {
+        overlay.classList.add('pointer-events-none');
+        overlay.style.opacity = '0';
+        drawer.style.transform = 'translateX(100%)';
+    }
+
+    overlay.addEventListener('click', closeUserDrawer);
+
+    function deleteUser(userId, username) {
+        if (confirm(`Apakah Anda yakin ingin menghapus akun ${username} secara permanen?\nSemua arsip foto milik user ini juga akan dihapus fisik dari server!`)) {
+            fetch(`/admin/user/${userId}/delete`, {
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove Row in Table with GSAP
+                    gsap.to(`#user-row-${userId}`, {
+                        opacity: 0,
+                        x: -50,
+                        duration: 0.5,
+                        onComplete: () => {
+                            document.getElementById(`user-row-${userId}`).remove();
+                            // Update total users counter badge dynamically
+                            const totalCounter = document.querySelector('.admin-stats h3');
+                            if (totalCounter) {
+                                const currentCount = parseInt(totalCounter.innerText);
+                                totalCounter.innerText = Math.max(0, currentCount - 1);
+                            }
+                        }
+                    });
+                } else {
+                    alert('Gagal menghapus user: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Gagal menghapus akun, periksa jaringan.');
+            });
+        }
+    }
+
+    function runCleanup() {
+        if (!confirm('Bersihkan semua record foto sampah (orphan) dari database?\nIni akan menghapus entri foto yang sudah dihapus oleh pengguna namun masih tersimpan di database.')) return;
+
+        fetch('/admin/cleanup-orphans', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`✅ ${data.message}`);
+                    // Reload halaman agar stat Total Photos diperbarui
+                    window.location.reload();
+                } else {
+                    alert('❌ Gagal cleanup: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan saat cleanup.');
+            });
+    }
+</script>
+
+{% endblock %}
