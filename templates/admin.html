@@ -6,15 +6,15 @@
         <!-- Header -->
         <div class="flex justify-between items-end mb-10 border-b border-zinc-200 pb-6 dash-header">
             <div>
-                <h1 class="text-3xl md:text-5xl font-black tracking-widest text-zinc-900 uppercase font-sans">System Admin</h1>
+                <h1 class="text-3xl md:text-5xl font-black tracking-widest text-zinc-900 uppercase font-sans">Admin</h1>
                 <p class="text-zinc-500 text-xs tracking-widest uppercase mt-2 font-semibold">
-                    &#9632; Pusat Kendali Pengguna &amp; Arsip Server
+                    Kelola pengguna dan arsip foto.
                 </p>
             </div>
             <div class="flex items-center gap-3">
                 <button type="button" onclick="runCleanup()" title="Bersihkan record foto yang sudah dihapus dari database"
                     class="inline-block bg-amber-50 hover:bg-amber-500 hover:text-white text-amber-700 border border-amber-200 font-black text-[10px] tracking-widest uppercase px-5 py-3 transition-all duration-300 rounded-xl cursor-pointer">
-                    🧹 Cleanup DB
+                    Bersihkan DB
                 </button>
                 <a href="{{ url_for('user.dashboard') }}"
                     class="inline-block bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-black text-[10px] tracking-widest uppercase px-5 py-3 border border-zinc-200 transition-all duration-300 rounded-xl cursor-pointer">
@@ -27,26 +27,26 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 admin-stats">
             <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-emerald-500 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Users Registered</p>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Pengguna</p>
                     <h3 class="text-3xl font-black text-zinc-900">{{ users|length }}</h3>
                 </div>
-                <div class="text-3xl bg-emerald-50 text-emerald-600 w-12 h-12 flex items-center justify-center rounded-2xl">👥</div>
+                <div class="text-sm font-black bg-emerald-50 text-emerald-600 w-12 h-12 flex items-center justify-center rounded-2xl">USER</div>
             </div>
             <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-blue-500 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Photos Saved</p>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Total Foto</p>
                     <h3 class="text-3xl font-black text-zinc-900">{{ total_photos | default('0') }}</h3>
                 </div>
-                <div class="text-3xl bg-blue-50 text-blue-600 w-12 h-12 flex items-center justify-center rounded-2xl">📸</div>
+                <div class="text-sm font-black bg-blue-50 text-blue-600 w-12 h-12 flex items-center justify-center rounded-2xl">FOTO</div>
             </div>
             <div class="bg-white border border-zinc-200/80 p-6 rounded-3xl shadow-sm border-l-4 border-l-purple-500 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Server System Status</p>
+                    <p class="text-[10px] font-black tracking-widest uppercase text-zinc-400 mb-1">Status Server</p>
                     <h3 class="text-sm font-black text-emerald-600 tracking-wider flex items-center gap-1.5 mt-1">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> ONLINE
                     </h3>
                 </div>
-                <div class="text-3xl bg-purple-50 text-purple-600 w-12 h-12 flex items-center justify-center rounded-2xl">⚙️</div>
+                <div class="text-sm font-black bg-purple-50 text-purple-600 w-12 h-12 flex items-center justify-center rounded-2xl">OK</div>
             </div>
         </div>
 
@@ -56,10 +56,10 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-zinc-100 text-[10px] tracking-widest uppercase text-zinc-400">
-                            <th class="p-4 font-bold">User Profile</th>
-                            <th class="p-4 font-bold">Email Address</th>
-                            <th class="p-4 font-bold">Account Role</th>
-                            <th class="p-4 font-bold text-right">Actions</th>
+                            <th class="p-4 font-bold">Pengguna</th>
+                            <th class="p-4 font-bold">Email</th>
+                            <th class="p-4 font-bold">Role</th>
+                            <th class="p-4 font-bold text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,7 +70,7 @@
                                     {% if u.profile_pic %}
                                         <img src="{{ url_for('static', filename='uploads/' + u.profile_pic) }}" class="w-full h-full object-cover" alt="Avatar">
                                     {% else %}
-                                        <span class="text-md text-zinc-400">👤</span>
+                                        <span class="text-xs font-bold text-zinc-400">ME</span>
                                     {% endif %}
                                 </div>
                                 <div>
@@ -93,12 +93,12 @@
                             <td class="p-4 text-right space-x-1">
                                 <button type="button" onclick="openUserDrawer('{{ u.id }}')"
                                     class="inline-flex items-center gap-1 bg-zinc-900 text-white hover:bg-zinc-800 text-[10px] font-black uppercase tracking-wider px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm cursor-pointer">
-                                    👁️ Detail
+                                    Detail
                                 </button>
                                 {% if u.id != current_user.id %}
                                 <button type="button" onclick="deleteUser('{{ u.id }}', '{{ u.username }}')"
                                     class="inline-flex items-center gap-1 bg-red-50 text-red-600 border border-red-100 hover:bg-red-600 hover:text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow-sm cursor-pointer">
-                                    🗑️ Hapus
+                                    Hapus
                                 </button>
                                 {% endif %}
                             </td>
@@ -118,7 +118,7 @@
     <!-- Drawer Header -->
     <div class="p-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
         <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase flex items-center gap-1.5">
-            <span class="inline-block w-1.5 h-1.5 bg-zinc-500 rounded-full"></span> Studio Member Card Detail
+            <span class="inline-block w-1.5 h-1.5 bg-zinc-500 rounded-full"></span> Detail Pengguna
         </h3>
         <button type="button" onclick="closeUserDrawer()" class="text-zinc-400 hover:text-zinc-600 text-md font-bold cursor-pointer">
             ✕ Close
@@ -130,24 +130,24 @@
         <!-- Member Profile Card -->
         <div class="border border-zinc-200/80 p-6 rounded-3xl bg-zinc-50/50 shadow-sm relative overflow-hidden flex flex-col items-center text-center">
             <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md ring-1 ring-zinc-200 bg-zinc-100 mb-4 flex items-center justify-center">
-                <img id="drawer-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-full h-full object-cover hidden" alt="Avatar">
-                <span id="drawer-avatar-placeholder" class="text-4xl text-zinc-400">👤</span>
+                <img id="drawer-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-full h-full object-cover hidden" alt="Foto profil">
+                <span id="drawer-avatar-placeholder" class="text-sm font-bold text-zinc-400">ME</span>
             </div>
             <h4 id="drawer-username" class="text-xl font-black text-zinc-900 uppercase font-sans">-</h4>
             <span id="drawer-role-badge" class="mt-2 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider">-</span>
             <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 border-t border-zinc-200/60 pt-6 text-left text-xs">
                 <div class="space-y-1">
-                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Email Address</span>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Email</span>
                     <span id="drawer-email" class="text-zinc-700 font-semibold block truncate">-</span>
                 </div>
                 <div class="space-y-1">
-                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Phone Number</span>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Nomor HP</span>
                     <span id="drawer-phone" class="text-zinc-700 font-semibold block truncate">-</span>
                 </div>
             </div>
 
             <div class="w-full mt-4 text-left text-xs border-t border-zinc-200/60 pt-4 space-y-1">
-                <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Biography Description</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">Bio</span>
                 <p id="drawer-bio" class="text-zinc-600 font-medium leading-relaxed">-</p>
             </div>
         </div>
@@ -155,20 +155,20 @@
         <!-- User Photobooth Gallery -->
         <div class="space-y-4">
             <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase flex items-center gap-1.5">
-                <span class="inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span> User Gallery Capture History
+                <span class="inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Galeri Pengguna
             </h3>
             <div id="drawer-gallery" class="grid grid-cols-3 gap-3">
                 <!-- Loaded Dynamically -->
             </div>
             <div id="drawer-gallery-empty" class="hidden border border-dashed border-zinc-200/80 p-8 rounded-2xl text-center text-xs text-zinc-400">
-                Belum ada arsip foto senyuman yang terdeteksi. 📸
+                Pengguna ini belum punya foto tersimpan.
             </div>
         </div>
     </div>
 
     <!-- Drawer Footer -->
     <div class="p-5 border-t border-zinc-100 bg-zinc-50 text-[10px] font-bold text-zinc-400 uppercase tracking-widest text-center">
-        © AESTHETIC STUDIO CONTROL ROOM
+        Photobooth Studio Admin
     </div>
 </div>
 
@@ -233,7 +233,7 @@
                             const wrapper = document.createElement('div');
                             wrapper.className = 'aspect-[3/4] bg-zinc-100 rounded-xl overflow-hidden relative border border-zinc-200 shadow-sm group/photo';
                             wrapper.innerHTML = `
-                                <img src="/static/uploads/${p.file_path}" class="w-full h-full object-cover transition-transform duration-500 group-hover/photo:scale-110" alt="Capture">
+                                <img src="/static/uploads/${p.file_path}" class="w-full h-full object-cover transition-transform duration-500 group-hover/photo:scale-110" alt="Foto pengguna">
                                 <div class="absolute bottom-2 right-2 bg-black/85 backdrop-blur-md px-1.5 py-0.5 rounded text-[8px] font-black text-white uppercase">
                                     😊 ${p.smile_score}%
                                 </div>
@@ -310,11 +310,11 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert(`✅ ${data.message}`);
+                    alert(data.message);
                     // Reload halaman agar stat Total Photos diperbarui
                     window.location.reload();
                 } else {
-                    alert('❌ Gagal cleanup: ' + data.message);
+                    alert('Gagal cleanup: ' + data.message);
                 }
             })
             .catch(err => {

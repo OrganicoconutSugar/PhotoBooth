@@ -1,7 +1,7 @@
 function updateFrameNumbers() {
     const frameLabels = document.querySelectorAll('.frame-number');
     frameLabels.forEach((label, index) => {
-        label.innerText = `FRAME_${index + 1}`;
+        label.innerText = `Foto ${index + 1}`;
     });
 
     const remainingCards = document.querySelectorAll('.gallery-card');
@@ -32,7 +32,7 @@ function removeCardElement(buttonElement) {
 }
 
 function deletePhoto(filename, buttonElement) {
-    if (confirm('Apakah kamu yakin ingin menghapus frame beserta foto ini secara permanen?')) {
+    if (confirm('Hapus foto ini secara permanen?')) {
         fetch(`/delete-photo/${filename}`, {
             method: 'DELETE',
             headers: {

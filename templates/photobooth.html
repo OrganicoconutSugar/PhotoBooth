@@ -6,10 +6,10 @@
 
     <div class="text-center mb-10 max-w-2xl animate-fade-in">
         <h1 class="text-3xl md:text-5xl font-black tracking-widest text-zinc-900 uppercase font-sans">
-            AES CAM SMILE!!!
+            Kamera Senyum
         </h1>
         <p class="text-zinc-500 text-xs tracking-widest uppercase mt-3 font-semibold">
-            PASTIKAN PENCAHAYAAN CUKUP DAN LEPASKAN SENYUMAN TERBAIKMU
+            Cari cahaya yang nyaman, lalu ambil foto saat kamu siap.
         </p>
     </div>
 
@@ -19,8 +19,8 @@
             class="lg:col-span-8 bg-white border border-zinc-200/80 p-5 rounded-[24px] shadow-sm relative overflow-hidden group chamber-viewport flex flex-col justify-between">
 
             <div class="flex items-center gap-2 mb-4 px-1">
-                <span class="text-lg">📸</span>
-                <h2 class="text-sm font-black tracking-widest text-zinc-700 uppercase">AI CAMERA</h2>
+                <span class="w-2 h-2 bg-zinc-700 rounded-full"></span>
+                <h2 class="text-sm font-black tracking-widest text-zinc-700 uppercase">Kamera</h2>
             </div>
 
             <div
@@ -51,7 +51,7 @@
 
                 <div
                     class="absolute bottom-4 right-4 bg-zinc-950/80 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl flex items-center justify-center gap-2 z-10 shadow-lg">
-                    <span class="text-[10px] font-black tracking-widest text-zinc-400 uppercase">SMILE:</span>
+                    <span class="text-[10px] font-black tracking-widest text-zinc-400 uppercase">Senyum</span>
                     <span id="smile-badge-percent" class="text-sm font-black text-white tracking-wide">0%</span>
                 </div>
             </div>
@@ -62,23 +62,23 @@
             <div
                 class="bg-white border border-zinc-200/80 p-6 shadow-sm rounded-[24px] panel-card flex-1 flex flex-col justify-center">
                 <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase mb-5 flex items-center gap-1.5">
-                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> SYSTEM DIAGNOSTIC
+                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> Status Sesi
                 </h3>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center border-b border-zinc-100 pb-2.5">
-                        <span class="text-xs text-zinc-500 uppercase tracking-wider">Camera Status</span>
+                        <span class="text-xs text-zinc-500 uppercase tracking-wider">Kamera</span>
                         <span id="camera-status"
                             class="text-xs font-bold text-zinc-400 tracking-widest flex items-center gap-1.5">
-                            CONNECTING
+                            Menghubungkan
                         </span>
                     </div>
                     <div class="flex justify-between items-center border-b border-zinc-100 pb-2.5">
-                        <span class="text-xs text-zinc-500 uppercase tracking-wider">AI Smile Detector</span>
+                        <span class="text-xs text-zinc-500 uppercase tracking-wider">Deteksi Senyum</span>
                         <span id="smile-status"
-                            class="text-xs font-bold text-zinc-700 uppercase tracking-widest">INITIALIZING...</span>
+                            class="text-xs font-bold text-zinc-700 uppercase tracking-widest">Menyiapkan...</span>
                     </div>
                     <div class="flex justify-between items-center text-[11px] text-zinc-500">
-                        <span>Target Auto Trigger:</span>
+                        <span>Foto otomatis:</span>
                         <span class="text-zinc-900 font-black">≥ 80%</span>
                     </div>
                     <div
@@ -93,36 +93,33 @@
             <div
                 class="bg-white border border-zinc-200/80 p-6 shadow-sm relative overflow-hidden rounded-[24px] panel-card">
                 <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase mb-4 flex items-center gap-1.5">
-                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> SHUTTER CONTROL
+                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> Tombol Foto
                 </h3>
                 <p class="text-zinc-600 text-[11px] leading-relaxed mb-6 font-medium uppercase tracking-wide">
-                    Sistem mengambil foto secara otomatis saat senyumanmu terdeteksi di atas <span
-                        class="text-zinc-900 font-bold">80%</span>, atau gunakan tombol manual di bawah ini.
+                    Foto otomatis aktif saat senyummu melewati <span
+                        class="text-zinc-900 font-bold">80%</span>. Kamu juga bisa mengambil foto secara manual.
                 </p>
 
                 <button id="capture-btn" type="button"
                     class="w-full bg-zinc-900 text-white font-black text-xs tracking-widest uppercase py-4 rounded-xl border border-zinc-900 hover:bg-zinc-800 transition-all duration-300 transform active:scale-95 shadow-md flex items-center justify-center gap-2">
-                    AMBIL FOTO MANUAL <span class="text-[10px]">❯</span>
+                    Ambil Foto
                 </button>
             </div>
 
             <div class="bg-white border border-zinc-200/80 p-5 shadow-sm rounded-[24px] panel-card">
                 <h3 class="text-xs font-black tracking-[0.2em] text-zinc-400 uppercase mb-3 flex items-center gap-1.5">
-                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> RECENT HIGHLIGHTS
+                    <span class="inline-block w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> Foto Terakhir
                 </h3>
                 <div class="grid grid-cols-4 gap-2">
-                    <div
-                        class="aspect-[3/4] bg-zinc-100 rounded-lg border border-zinc-200 flex items-center justify-center text-xs text-zinc-400">
-                        📸</div>
-                    <div
-                        class="aspect-[3/4] bg-zinc-50 rounded-lg border border-zinc-200/60 flex items-center justify-center text-xs">
-                    </div>
-                    <div
-                        class="aspect-[3/4] bg-zinc-50 rounded-lg border border-zinc-200/60 flex items-center justify-center text-xs">
-                    </div>
-                    <div
-                        class="aspect-[3/4] bg-zinc-50 rounded-lg border border-zinc-200/60 flex items-center justify-center text-xs">
-                    </div>
+                    {% for photo in recent_photos %}
+                    <img src="{{ url_for('static', filename='uploads/' + photo.file_path) }}"
+                        alt="Foto terakhir"
+                        class="aspect-[3/4] w-full object-cover bg-zinc-100 rounded-lg border border-zinc-200">
+                    {% else %}
+                    {% for i in range(4) %}
+                    <div class="aspect-[3/4] w-full rounded-lg bg-zinc-100 border border-zinc-200/60 opacity-80 flex items-center justify-center">📸</div>
+                    {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
 

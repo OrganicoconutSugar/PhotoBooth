@@ -12,7 +12,14 @@ user_bp = Blueprint('user', __name__)
 def dashboard():
     if current_user.role == 'admin':
         return redirect(url_for('admin.admin_dashboard'))
-    return render_template('dashboard.html', user=current_user)
+    recent_photos = (
+        Photo.query
+        .filter_by(user_id=current_user.id)
+        .order_by(Photo.id.desc())
+        .limit(6)
+        .all()
+    )
+    return render_template('dashboard.html', user=current_user, recent_photos=recent_photos)
 
 @user_bp.route('/profile', methods=['GET', 'POST'])
 @login_required

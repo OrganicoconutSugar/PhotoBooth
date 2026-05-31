@@ -13,7 +13,14 @@ photo_bp = Blueprint('photo', __name__)
 def photobooth():
     if current_user.role == 'admin':
         return redirect(url_for('admin.admin_dashboard'))
-    return render_template('photobooth.html', user=current_user)
+    recent_photos = (
+        Photo.query
+        .filter_by(user_id=current_user.id)
+        .order_by(Photo.id.desc())
+        .limit(4)
+        .all()
+    )
+    return render_template('photobooth.html', user=current_user, recent_photos=recent_photos)
 
 @photo_bp.route('/save-photo', methods=['POST'])
 @login_required
@@ -36,7 +43,7 @@ def save_photo():
         db.session.add(new_photo)
         db.session.commit()
 
-        return {'success': True, 'filename': filename, 'message': 'Foto senyummu berhasil disimpan! ✨'}
+        return {'success': True, 'filename': filename, 'message': 'Foto berhasil disimpan.'}
     except Exception as e:
         return {'success': False, 'message': 'Gagal memproses penyimpanan foto'}, 500
 

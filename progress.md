@@ -5,7 +5,85 @@
 
 ---
 
+### [2026-05-31 15:20] — Cleanup: remove stale comments & prepare cache flush
+
+**Status:** ✅ In progress
+
+**Yang Dikerjakan:**
+- Menghapus komentar placeholder dan baris yang tidak lagi relevan dari template untuk merapikan source.
+- Mempersiapkan pembersihan cache (`.DS_Store`, `*.pyc`, `__pycache__`) setelah verifikasi aman.
+
+**File yang Diubah/Dibuat:**
+- `templates/base.html` — hapus komentar unused ambient image
+- `templates/dashboard.html` — rapikan fallback image comment
+
+**Catatan Penting:**
+- Saya akan menunggu konfirmasi sebelum benar-benar menghapus file cache/artifak dari disk. Jika setuju, saya akan menghapus file-file tersebut dan memperbarui entri ini menjadi ✅ Selesai.
+
 ## 🗓️ Log Aktivitas
+
+### [2026-05-31 10:02] — Tweak Light-Theme CTA / Badge Readability
+
+**Status:** ✅ Implemented
+
+**Yang Dikerjakan:**
+- Mengurangi dan menghapus `text-shadow` yang berlebihan di mode terang (`light-theme`) agar typografi tidak terlihat terlalu tebal atau jenuh di atas background foto.
+- Menyetel ulang style badge/overlay pada kartu gallery dan photobooth sehingga menjadi panel terang dengan teks gelap saat `light-theme` aktif, meningkatkan keterbacaan label seperti "Tersimpan".
+- Mengganti CTA gelap (mis. tombol "Ambil Foto Baru") untuk memakai `--studio-accent` di `light-theme` sehingga teks CTA tetap kontras tanpa menimbulkan blok warna hitam yang menutupi detail gambar di belakangnya.
+- Menurunkan saturasi dan opacity elemen ambient/background pada `light-theme` bila mengganggu keterbacaan konten.
+
+**Catatan:**
+- Perubahan ini bersifat global dan bertujuan memperbaiki kasus umum benturan kontras di beberapa halaman. Jika ada contoh spesifik (halaman + elemen) yang masih bermasalah, kirim screenshot atau sebutkan nama template agar saya bisa men-tune lebih presisi.
+
+---
+
+### [2026-05-31 11:05] — Remove badge spans & adjust Kamera/Galeri card layout
+
+**Status:** ✅ Implemented
+
+**Yang Dikerjakan:**
+- Menghapus elemen `<span>` kecil pada kartu "Kamera" dan "Galeri" di `templates/dashboard.html`.
+- Menambahkan padding kanan (`pr-48` pada mobile / `md:pr-56` pada layar sedang/besar) pada konten kartu agar teks tidak tertimpa oleh gambar pratinjau yang diposisikan absolute.
+
+**File yang Diubah:**
+- `templates/dashboard.html` — hapus badge span dan tambah kelas padding pada div konten.
+
+
+### [2026-05-31 13:19] — Natural UI Cleanup dengan Taste Skill
+
+**Status:** ✅ Selesai
+
+**Yang Dikerjakan:**
+- Menemukan skill lokal yang benar bernama `taste-skill` dan menerapkan prinsip anti-slop dari instruksinya.
+- Mengurangi copy template/futuristik di UI menjadi bahasa yang lebih natural untuk aplikasi photobooth.
+- Menghubungkan dashboard dan photobooth ke foto terbaru user agar tidak bergantung pada placeholder generik.
+- Memakai `static/assets/Photobooth_Background.jpeg` sebagai fallback visual dari folder assets agar mudah diperbarui.
+- Membersihkan sisa title, brand, navigasi, dan design guideline yang masih terasa seperti “AI studio”.
+
+**File yang Diubah/Dibuat:**
+- `core/routes/user.py` — kirim `recent_photos` ke dashboard.
+- `core/routes/photo.py` — kirim `recent_photos` ke photobooth dan rapikan pesan simpan foto.
+- `templates/base.html` — naturalisasi title, brand, navigasi, dan marker profil.
+- `templates/dashboard.html` — gunakan foto asli/fallback asset dan rapikan copy.
+- `templates/gallery.html` — naturalisasi judul, empty state, overlay, dan label kartu.
+- `templates/photobooth.html` — naturalisasi label kamera/status dan preview foto terakhir.
+- `templates/profile.html` — naturalisasi label profil.
+- `templates/admin.html` — naturalisasi dashboard admin, drawer, dan action labels.
+- `templates/login.html` — naturalisasi subtitle login.
+- `static/js/gallery.js` — ubah label frame dan konfirmasi hapus.
+- `static/js/photobooth.js` — naturalisasi status kamera dan kirim `smile_score`.
+- `DESIGN.md` — update prinsip desain ke “Warm Studio” dan local assets first.
+- `progress.md` — menambahkan log aktivitas.
+
+**Catatan Penting:**
+- Nama skill yang tersedia di disk adalah `taste-skill`, bukan `taste-skill-codex`.
+- Scan ulang istilah slop hanya menyisakan false positive `base64` pada avatar placeholder admin, bukan teks UI.
+- Syntax Python dan JS valid; route `/dashboard`, `/gallery`, `/photobooth`, dan `/profile` semuanya render `200`.
+
+**Next Step (jika ada):**
+- [ ] Tambahkan 2-3 aset foto di `static/assets/` untuk variasi empty state dan dashboard fallback.
+
+---
 
 ### [2026-05-30 18:46] — Redesign Dasbor Admin & Fitur Dynamic User Drawer (Major Feature Release)
 
@@ -272,11 +350,34 @@ Foto-foto yang sudah dihapus oleh pengguna (user) dari galeri mereka masih terli
 **Status:** ✅ Implemented
 
 **Yang Dikerjakan:**
-- Menambahkan CSS override ketika `body.hero-bg` aktif untuk men-tweak utility classes (`.bg-white`, `.bg-zinc-50`, panel-card, form-card, gallery-card, dll) sehingga elemen-elemen tersebut menjadi semi-transparant gelap dan teks dipaksa terang agar tetap terbaca di atas foto.
-- Memastikan footer gallery, badges, dan teks kecil tetap memiliki kontras yang cukup.
 
 **Catatan:**
-- Jika ada komponen spesifik yang masih bermasalah, sebutkan nama file/template atau kirim screenshot agar saya bisa men-tune kasus tersebut secara presisi.
+
+
+
+---
+
+### [2026-05-30 20:04] — Cleanup Temporary Preview Files
+
+**Status:** ✅ Completed
+
+**Yang Dikerjakan:**
+- Menghapus berkas log dan snapshot sementara yang dibuat selama sesi preview: `/tmp/photobooth_server.log`, `/tmp/photobooth_server.pid`, `/tmp/login.html`, `/tmp/dashboard.html`, `/tmp/photobooth.html`, `/tmp/gallery.html`.
+- Tidak menghapus data pengguna atau aset penting (mis. `static/uploads`, `instance/database.db`).
+
+---
+
+### [2026-05-31 09:12] — Remove Unused Studio Assets & Cleanup Cache
+
+**Status:** ✅ Completed
+
+**Yang Dikerjakan:**
+- Menghapus referensi `studio-panel.jpg` dan `studio-strip.jpg` dari template `base.html`, `gallery.html`, `photobooth.html`, dan `dashboard.html`.
+- Menghapus berkas fisik `static/assets/studio-panel.jpg` dan `static/assets/studio-strip.jpg` dari project.
+- Membersihkan file cache umum yang aman untuk dihapus: `.DS_Store`, `*.pyc`, dan direktori `__pycache__`. Tidak menghapus data penting seperti `static/uploads/` atau `instance/database.db`.
+
+**Catatan:**
+- Jika Anda ingin menambahkan gambar pengganti, beri tahu nama file dan saya akan memasangnya kembali dengan markup yang lebih aman (lazy-loading dan fallback).
 
 
 

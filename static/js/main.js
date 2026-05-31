@@ -1,15 +1,21 @@
 function applyGlobalTheme(theme) {
-    const icon = document.getElementById('global-theme-icon');
     const text = document.getElementById('global-theme-text');
+    const toggle = document.getElementById('theme-toggle');
 
     if (theme === 'light') {
         document.body.classList.add('light-theme');
-        if (icon) icon.innerText = '🌙';
-        if (text) text.innerText = 'DARK';
+        if (text) text.innerText = 'Light';
+        if (toggle) {
+            toggle.setAttribute('aria-pressed', 'true');
+            toggle.setAttribute('aria-label', 'Ganti ke tema gelap');
+        }
     } else {
         document.body.classList.remove('light-theme');
-        if (icon) icon.innerText = '☀️';
-        if (text) text.innerText = 'LIGHT';
+        if (text) text.innerText = 'Dark';
+        if (toggle) {
+            toggle.setAttribute('aria-pressed', 'false');
+            toggle.setAttribute('aria-label', 'Ganti ke tema terang');
+        }
     }
 }
 

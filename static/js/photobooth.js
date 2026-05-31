@@ -16,11 +16,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let isCountdownActive = false;
     let isCapturing = false;
+    let currentSmileScore = 0;
 
     video.addEventListener('loadedmetadata', () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        cameraStatus.innerHTML = '<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> <span class="text-emerald-600 font-bold">ACTIVE</span>';
+        cameraStatus.innerHTML = '<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> <span class="text-emerald-600 font-bold">Aktif</span>';
     });
 
     function cDistance(p1, p2) {
@@ -47,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function executeShutter() {
         isCapturing = true;
         countdownOverlay.style.opacity = "0";
-        smileStatus.innerHTML = '<span class="text-amber-600 animate-pulse">CAPTURING...</span>';
+        smileStatus.innerHTML = '<span class="text-amber-600 animate-pulse">Mengambil foto...</span>';
 
         const captureCanvas = document.createElement('canvas');
         captureCanvas.width = video.videoWidth;
@@ -63,20 +64,20 @@ window.addEventListener('DOMContentLoaded', () => {
         fetch('/save-photo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image: dataUrl })
+            body: JSON.stringify({ image: dataUrl, smile_score: currentSmileScore })
         })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    smileStatus.innerHTML = '<span class="text-emerald-600">SAVED!</span>';
+                    smileStatus.innerHTML = '<span class="text-emerald-600">Tersimpan</span>';
                 } else {
-                    smileStatus.innerHTML = '<span class="text-emerald-600">CAPTURED</span>';
+                    smileStatus.innerHTML = '<span class="text-emerald-600">Foto diambil</span>';
                 }
                 setTimeout(() => { isCapturing = false; isCountdownActive = false; }, 2000);
             })
             .catch(err => {
                 console.error(err);
-                smileStatus.innerHTML = '<span class="text-emerald-600">CAPTURED</span>';
+                smileStatus.innerHTML = '<span class="text-emerald-600">Foto diambil</span>';
                 setTimeout(() => { isCapturing = false; isCountdownActive = false; }, 1500);
             });
     }
@@ -114,7 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const FaceMeshClass = window.FaceMesh || (typeof FaceMesh !== 'undefined' ? FaceMesh : null);
     if (!FaceMeshClass) {
         console.error("MediaPipe FaceMesh library not loaded!");
-        smileStatus.innerHTML = '<span class="text-red-500 font-bold">AI ENGINE ERROR</span>';
+        smileStatus.innerHTML = '<span class="text-red-500 font-bold">Deteksi wajah gagal dimuat</span>';
         return;
     }
 
@@ -135,9 +136,10 @@ window.addEventListener('DOMContentLoaded', () => {
         if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
             const landmarks = results.multiFaceLandmarks[0];
             const score = detectSmile(landmarks);
+            currentSmileScore = score;
 
             if (!isCountdownActive && !isCapturing) {
-                smileStatus.innerHTML = `SMILING: <span class="text-zinc-900 font-black">${score}%</span>`;
+                smileStatus.innerHTML = `Senyum: <span class="text-zinc-900 font-black">${score}%</span>`;
                 smileBar.style.width = `${score}%`;
                 smileBadgePercent.innerText = `${score}%`;
 
@@ -152,7 +154,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             if (!isCountdownActive && !isCapturing) {
-                smileStatus.innerHTML = '<span class="text-zinc-400 font-bold">READY</span>';
+                smileStatus.innerHTML = '<span class="text-zinc-400 font-bold">Siap</span>';
+                currentSmileScore = 0;
                 smileBar.style.width = `0%`;
                 smileBadgePercent.innerText = `0%`;
             }
@@ -195,6 +198,6 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => {
             console.error(err);
-            smileStatus.innerHTML = '<span class="text-red-500">CAMERA ERROR</span>';
+            smileStatus.innerHTML = '<span class="text-red-500">Kamera tidak bisa dibuka</span>';
         });
 });
